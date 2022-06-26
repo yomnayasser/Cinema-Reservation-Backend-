@@ -13,7 +13,11 @@ router.delete('/delete/:id',movie.deleteMovie)
 router.patch('/addActor/:id',movie.addActor)
 router.patch('/addDirector/:id',movie.addDirector)
 router.patch('/addWriter/:id',movie.addWriter)
+// router.patch('/addDateTime/:id',movie.addDataTime)
 
 router.patch('/addPoster', upload.single('poster'),movie.addImage)
+
+router.get('/allMovies',movie.getAllMovies)
+router.get('/getMovie/:id',movie.getMovie)
 
 module.exports=router

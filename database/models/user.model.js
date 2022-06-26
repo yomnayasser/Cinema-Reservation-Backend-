@@ -21,6 +21,12 @@ const userSchema=mongoose.Schema({
         type:String,
         trim:true
     },
+    password:{
+        type:String,
+        required: true,
+        trim:true,
+        match:/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[a-zA-Z]).{8,}$/
+    }
    
 })
 

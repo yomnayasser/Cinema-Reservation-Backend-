@@ -20,7 +20,7 @@ const movieSchema = mongoose.Schema({
       },
     },
   ],
-  time: {
+  runTime: {
     type: String,
     required: true,
     trim: true,
@@ -43,9 +43,9 @@ const movieSchema = mongoose.Schema({
     type: String,
     required: true,
     trim: true,
-    enum: ["Playing","Coming Soon"],
+    enum: ["Playing", "Coming Soon"],
   },
-  image:{
+  image: {
     type: String,
     required: true,
     trim: true,
@@ -77,6 +77,34 @@ const movieSchema = mongoose.Schema({
       },
     },
   ],
+  // dateTime: [
+  //   {
+  //     date: {
+  //       type: String,
+  //       required: true,
+  //       trim: true,
+  //     },
+  //     times: [
+  //       {
+  //         time: {
+  //           type: String,
+  //           required: true,
+  //           trim: true,
+  //         },
+  //         type:{
+  //           type: String,
+  //           required: true,
+  //           trim: true,
+  //           enum: ["3D", "Front"]
+  //         },
+  //         price:{
+  //           type:Number,
+  //           required:true
+  //         }
+  //       },
+  //     ],
+  //   },
+  // ],
 });
 
 movieSchema.methods.toJSON = function () {
