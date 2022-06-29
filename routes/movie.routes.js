@@ -1,8 +1,9 @@
 const multer  = require('multer')
 const upload = multer({ dest: 'images/' })
-
 const movie = require("../controllers/movie.controller")
 const router = require("express").Router()
+
+const {auth,adminAuth } = require("../middleware/auth.middleware")
 
 router.post('/add',movie.addMovie)
 

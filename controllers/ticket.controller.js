@@ -28,14 +28,9 @@ class Ticket {
             updateMovieIndex
           ].takenSeats += 1;
           await theater.save();
-
-          if(time=="12:00"){
-            price=120
-          }
-          else
-          {
-            price=200
-          }
+          price=theater.movies[movieIndex].sechudleTime[
+            updateMovieIndex
+          ].price
           const ticketInfo={...req.body, price:price}
           const ticket = new ticketModel(ticketInfo)
           await ticket.save()

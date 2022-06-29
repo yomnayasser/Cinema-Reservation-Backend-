@@ -79,27 +79,54 @@ class Theater {
   static getMovieTheater = async (req, res) => {
     try {
       const movieID = req.params.id;
-      const theaters = await theaterModel.find()
-      let theaterID;
-      theaters.map((theater) => {
-        theater['movies'].map((movie)=>{
-         if(movie.movieID==movieID){
-          theaterID=theater._id
-         }
-        })
-     });
-     if(theaterID){
+      const theaterID= await theaterModel.findOne({'theaters.movies':movieID})
       res.status(200).send({
-        apiStatus: true,
-        data: theaterID,
-        message: "Theater ID",
-      });
-     }
-     else throw new Error("No movie found")
+            apiStatus: true,
+            data: theaterID._id,
+            message: "Theater ID",
+          });
     } catch (e) {
       res.status(500).send({ apiStatus: false, error: e, message: e.message });
     }
   };
+
+  static getTheater=async(req,res)=>{
+   try{
+    const theaterID=req.params.id;
+    const theater=await theaterModel.findById(theaterID)
+    res.status(200).send({
+      apiStatus: true,
+      data: theater,
+      message: "Theater",
+    });
+   }
+   catch (e) {
+    res.status(500).send({ apiStatus: false, error: e, message: e.message });
+  }
+  }
+
+  static getMovieSchudleTime=async(req,res)=>{
+    try{
+      const theaterID=req.params.theaterID;
+      const movieID=req.params.movieID;
+      let sechudleTime
+      const theater=await theaterModel.findById(theaterID)
+      theater.movies.map((m, index) => {
+        console.log(m.movieID)
+        if (String(m.movieID) == String(movieID)) {
+          sechudleTime = m.sechudleTime;
+        }
+      });
+      res.status(200).send({
+        apiStatus: true,
+        data: sechudleTime,
+        message: " Movie's Theater sechudleTime",
+      });
+     }
+     catch (e) {
+      res.status(500).send({ apiStatus: false, error: e, message: e.message });
+    }
+    }
 }
 
 module.exports = Theater;

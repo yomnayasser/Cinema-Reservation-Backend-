@@ -1,10 +1,23 @@
 const movieModel = require("../database/models/movie.model");
-const fs = require("fs");
-const path = require("path");
+const fs = require("fs")
+const path=require("path")
 class Movie {
+
+  static addImage = (req) => {
+    const ext = path.extname(req.file.originalname);
+    const newName = "images/" + req.file.fieldname + Date.now() + ext;
+    fs.rename(req.file.path, newName, () => {});
+    return newName;
+  };
+
   static addMovie = async (req, res) => {
     try {
+     // console.log(req.body)
       const newMovie = new movieModel(req.body);
+    //   const ext = path.extname(req.file.originalname);
+    // const newName = req.file.fieldname+ ext;
+    // fs.rename(req.file.path, newName, () => {});
+    newMovie.movie=newName
       await newMovie.save();
       res.status(200).send({
         apiStatus: true,
@@ -82,29 +95,6 @@ class Movie {
     }
   };
 
-  // static addDataTime= async(req,res)=>{
-  //   try{
-  //     const id=req.params.id
-  //     const dateTime=req.body
-  //     const movie=await movieModel.findById(id)
-  //     movie.dateTime.push(dateTime)
-  //     await movie.save();
-  //     res
-  //       .status(200)
-  //       .send({ data: movie, apiStatus: true, message: "Movie updated" });
-  //   }
-  //   catch (e) {
-  //     res.status(500).send({ apiStatus: false, error: e, message: e.message });
-  //   }
-  // }
-
-  static addImage = (req, res) => {
-    const ext = path.extname(req.file.originalname);
-    const newName = "images/" + req.file.fieldname + Date.now() + ext;
-    fs.rename(req.file.path, newName, () => {});
-    return newName;
-  };
-
   static getAllMovies = async (req, res) => {
     try {
       const movies = await movieModel.find();
@@ -118,20 +108,35 @@ class Movie {
     }
   };
 
-  static getMovie=async(req,res)=>{
-    const id=req.params.id
-    try{
-      const movie=await movieModel.findById(id)
+  static getMovie = async (req, res) => {
+    const id = req.params.id;
+    try {
+      const movie = await movieModel.findById(id);
       res.status(200).send({
         apiStatus: true,
         data: movie,
         message: "movie data",
       });
-    }
-    catch (e) {
+    } catch (e) {
       res.status(500).send({ apiStatus: false, error: e, message: e.message });
     }
-  }
+  };
 }
 
 module.exports = Movie;
+
+// static addDataTime= async(req,res)=>{
+//   try{
+//     const id=req.params.id
+//     const dateTime=req.body
+//     const movie=await movieModel.findById(id)
+//     movie.dateTime.push(dateTime)
+//     await movie.save();
+//     res
+//       .status(200)
+//       .send({ data: movie, apiStatus: true, message: "Movie updated" });
+//   }
+//   catch (e) {
+//     res.status(500).send({ apiStatus: false, error: e, message: e.message });
+//   }
+// }
