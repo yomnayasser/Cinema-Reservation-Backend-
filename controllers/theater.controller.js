@@ -111,6 +111,7 @@ class Theater {
       const movieID=req.params.movieID;
       let sechudleTime
       const theater=await theaterModel.findById(theaterID)
+      let seatsNumber=theater.seatsNumber
       theater.movies.map((m, index) => {
         console.log(m.movieID)
         if (String(m.movieID) == String(movieID)) {
@@ -119,7 +120,7 @@ class Theater {
       });
       res.status(200).send({
         apiStatus: true,
-        data: sechudleTime,
+        data: {sechudleTime,seatsNumber},
         message: " Movie's Theater sechudleTime",
       });
      }
@@ -127,6 +128,7 @@ class Theater {
       res.status(500).send({ apiStatus: false, error: e, message: e.message });
     }
     }
+
 }
 
 module.exports = Theater;
