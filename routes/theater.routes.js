@@ -11,6 +11,7 @@ router.delete('/delete/:id',theater.deleteTheater)
 router.get('/allTheaters',theater.getAllTheater)
 router.get('/movieTheater/:id',theater.getMovieTheater)
 router.get('/getTheater/:id',theater.getTheater)
-router.get('/getMovieSchudleTime/:theaterID/:movieID',theater.getMovieSchudleTime)
+router.get('/getMovieSchudleTime/:theaterID/:movieID/:date',theater.getMovieSchudleTime)
+router.get('/getMovieSchudleDate/:theaterID/:movieID',theater.getMovieDates)
 
 module.exports=router

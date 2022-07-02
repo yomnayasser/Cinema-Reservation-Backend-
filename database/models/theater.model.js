@@ -18,21 +18,34 @@ theaterSchema = mongoose.Schema({
         ref: "Movie",
         require: true,
       },
-      sechudleTime: [
+      dayInfo: [
         {
-          time: {
+          date: {
             type: String,
             require: true,
-            trim: true,
+            tyim:true
           },
-          takenSeats: {
-            type: Number,
-            require: true,
-          },
-          price:{
-            type:Number,
-            require:true
-          }
+          sechudleTime: [
+            {
+              time: {
+                type: String,
+                require: true,
+                trim: true,
+              },
+              takenSeats: [
+                {
+                  seatNumber:{
+                    type: Number,
+                    // require: true,
+                  }  
+                }
+              ],
+              price: {
+                type: Number,
+                require: true,
+              },
+            },
+          ],
         },
       ],
     },

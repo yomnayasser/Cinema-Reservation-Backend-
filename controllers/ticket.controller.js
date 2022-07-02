@@ -7,28 +7,39 @@ class Ticket {
       const movieID = req.body.movieID;
       const theaterID = req.body.theaterID;
       const time = req.body.time;
+      const date=req.body.date;
+      const seatNum=req.body.seatNum
       let price
       let movieIndex;
+      let dayIndex;
       let updateMovieIndex;
       const theater = await theaterModel.findById(theaterID);
       theater.movies.map((m, index) => {
-        console.log(m.movieID)
+        //console.log(m.movieID)
         if (String(m.movieID) == String(movieID)) {
           movieIndex = index;
-          updateMovieIndex = m.sechudleTime.findIndex((t) => t.time == time);
+          m.dayInfo.map((d,index)=>{
+            if(d.date==date){
+              dayIndex=index
+              updateMovieIndex = d.sechudleTime.findIndex((t) => t.time == time);
+            }
+          })
+          
         }
       });
       if (movieIndex != null) {
         const seatNumber =
-          theater.movies[movieIndex].sechudleTime[updateMovieIndex].takenSeats;
+          theater.movies[movieIndex].dayInfo[dayIndex].sechudleTime[updateMovieIndex].takenSeats.length;
+         //console.log(seatNumber)
         if (seatNumber > theater.seatsNumber) {
           throw new Error("No Seats Left");
         } else {
-          theater.movies[movieIndex].sechudleTime[
+          theater.movies[movieIndex].dayInfo[dayIndex].sechudleTime[
             updateMovieIndex
-          ].takenSeats += 1;
+          ].takenSeats.push({"seatNumber":seatNum})
+          
           await theater.save();
-          price=theater.movies[movieIndex].sechudleTime[
+          price=theater.movies[movieIndex].dayInfo[dayIndex].sechudleTime[
             updateMovieIndex
           ].price
           const ticketInfo={...req.body, price:price}

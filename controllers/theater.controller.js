@@ -109,13 +109,20 @@ class Theater {
     try{
       const theaterID=req.params.theaterID;
       const movieID=req.params.movieID;
+      const date=req.params.date
       let sechudleTime
       const theater=await theaterModel.findById(theaterID)
+      //console.log(theater)
       let seatsNumber=theater.seatsNumber
       theater.movies.map((m, index) => {
-        console.log(m.movieID)
+       // console.log(m.movieID)
         if (String(m.movieID) == String(movieID)) {
-          sechudleTime = m.sechudleTime;
+          m.dayInfo.map((d)=>{
+            if(d.date==date){
+              sechudleTime = d.sechudleTime;
+            }
+          })
+         
         }
       });
       res.status(200).send({
@@ -129,6 +136,34 @@ class Theater {
     }
     }
 
+   
+      static getMovieDates=async(req,res)=>{
+        try{
+          const theaterID=req.params.theaterID;
+          const movieID=req.params.movieID;
+          let dates=[]
+          const theater=await theaterModel.findById(theaterID)
+          theater.movies.map((m, index) => {
+           // console.log(m.movieID)
+            if (String(m.movieID) == String(movieID)) {
+              m.dayInfo.map((d)=>{
+               dates.push(d.date)
+              })
+             
+            }
+          });
+          res.status(200).send({
+            apiStatus: true,
+            data: {dates},
+            message: " Movie's Theater Dates",
+          });
+         }
+         catch (e) {
+          res.status(500).send({ apiStatus: false, error: e, message: e.message });
+        }
+        
+    }
 }
+
 
 module.exports = Theater;
